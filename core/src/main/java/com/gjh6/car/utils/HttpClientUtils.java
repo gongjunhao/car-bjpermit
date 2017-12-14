@@ -2,10 +2,7 @@ package com.gjh6.car.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gjh6.car.model.Android;
-import org.apache.http.Consts;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -31,6 +28,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -44,7 +43,7 @@ import java.util.Map;
 
 /**
  * HTTPClient 工具类
- *
+ *  //Mozilla/5.0 (Linux; Android 7.1.1; MI MAX 2 Build/NMF26F; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/58.0.3029.83 Mobile Safari/537.36
  */
 public class HttpClientUtils {
     private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
@@ -162,17 +161,17 @@ public class HttpClientUtils {
      * @param queries
      * @param sb
      */
-    private void appendQueryParams(Map<String, String> queries, StringBuilder sb) {
+    private void appendQueryParams(Map<String, String> queries, StringBuilder sb) throws UnsupportedEncodingException {
         if (queries != null && queries.keySet().size() > 0) {
             boolean firstFlag = true;
             Iterator iterator = queries.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry entry = (Map.Entry<String, String>) iterator.next();
                 if (firstFlag) {
-                    sb.append("?" + (String) entry.getKey() + "=" + (String) entry.getValue());
+                    sb.append("?" + (String) entry.getKey() + "=" + URLEncoder.encode((String) entry.getValue(), "UTF-8"));
                     firstFlag = false;
                 } else {
-                    sb.append("&" + (String) entry.getKey() + "=" + (String) entry.getValue());
+                    sb.append("&" + (String) entry.getKey() + "=" + URLEncoder.encode((String) entry.getValue(), "UTF-8"));
                 }
             }
         }
@@ -248,6 +247,7 @@ public class HttpClientUtils {
         StringEntity stringEntity = new StringEntity(jsonbody,"utf-8");//解决中文乱码问题
         stringEntity.setContentEncoding("UTF-8");
         stringEntity.setContentType("application/json");
+
         httpPost.setEntity(stringEntity);
         //请求数据
         CloseableHttpResponse response = httpClient.execute(httpPost);
@@ -279,20 +279,30 @@ public class HttpClientUtils {
         return responseBody;
     }
 
+    /**
+     * MD5
+     * @param md5
+     * @return
+     */
+    public String MD5(String md5) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(md5.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+        }
+        return null;
+    }
+
     //Test
     public static void main(String[] args) {
-        try {
-            String url = "https://bjjj.zhongchebaolian.com/common_api/mobile/standard/checksoft";
-            Android android = new Android();
-            android.setCurver("21");
-            android.setPlatform("android");
-            android.setAreacode("all");
-            android.setSoftkey("iiowner_android");
-            String response = HttpClientUtils.getInstance().postJson(url, null, android);
-            logger.info(response);
-            JSONObject.parseObject(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("aaNVCC001037172a766779b87a87e7c34de0b8740ff0068fde".length());
+        String str = "079168235411a2efc70c57c340d1b5489c51da26bbEA1F449B54724E7AB2E1D941BF6AD4A02017-12-14 22:23:1102";
+        String md5 = HttpClientUtils.getInstance().MD5("str");
+        System.out.println(md5);
     }
 }
