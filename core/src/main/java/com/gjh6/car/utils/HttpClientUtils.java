@@ -42,7 +42,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * HTTPClient 工具类
+ *
+ */
 public class HttpClientUtils {
     private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
     private static int SocketTimeout = 10000;//10秒
@@ -286,7 +289,7 @@ public class HttpClientUtils {
             android.setAreacode("all");
             android.setSoftkey("iiowner_android");
             String response = HttpClientUtils.getInstance().postJson(url, null, android);
-            logger.debug(response);
+            logger.info(response);
             JSONObject.parseObject(response);
         } catch (IOException e) {
             e.printStackTrace();
