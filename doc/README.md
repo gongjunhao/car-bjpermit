@@ -19,9 +19,9 @@ com.gjh6.car.appclient.AppClientUtil.getInstance().checksoft();
 ### 获取车辆列表(原生组件)
 ```javascript
 https://bjjj.zhongchebaolian.com/industryguild_mobile_standard_self2.1.2/mobile/standard/getusercarlist?
-appkey=0791682354&
-sn=11a2efc70c57c340d1b5489c51da26bb&
-userid=EA1F449B54724E7AB2E1D941BF6AD4A0&
+appkey=111&
+sn=1111&
+userid=2222&
 timestamp=2017-12-14%2021:34:29&
 platform=02
 &sign=aaNVCC0010b0fdaf3819a5687351d0fda77a6f25b9080cd9e6
