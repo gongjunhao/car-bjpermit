@@ -4,7 +4,7 @@
 * 单个流程跑通后，考虑实现多用户，定时轮询执行
 * 提供用户注册界面（手机号，邮箱），邮件通知办理信息
 
-### 获取app版本
+### 检查app是否为最新版本
 ```java
 com.gjh6.car.appclient.AppClientUtil.getInstance().checksoft();
 
@@ -29,7 +29,7 @@ platform=02
 
 ### 签名算法
 * 采用阿里聚安全（https://jaq-doc.alibaba.com/docs/doc.htm?spm=a313e.7629140.0.0.KnvMZs&treeId=243&articleId=105581&docType=1#s3）
-* 需要搞明白阿里的sdk，还要拿到密钥，才能实现签名
+* 需要搞明白阿里的sdk，还要找到公钥，才能实现签名
 * 放弃！！！
 
 
